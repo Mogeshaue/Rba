@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>node</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- login -->
+     <div class="login-container">
+        <h2>Login</h2>
+        <form id="loginForm">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            
+            <button type="submit">Login</button>
+        </form>
+    <!-- Register -->
+     <div id="register" >
+        <h2>Register</h2>
+        <form id="register-form">
+            <div id="register-elements">
+                <label for="name">Name:</label>
+                <input type="text" name="name" id="regName">
+            </div>
+            <div id="register-elements">
+                <label for="regEmail">Email:</label>
+                <input type="email" name="name" id="regEmail">
+            </div>
+            <div id="register-elements">
+                <label for="regPassword">Password:</label>
+                <input type="password" name="name" id="regPassword">
+            </div>
+            <button type="sumbit">Register</button>
+        </form>
+        <p>Already have acc?<a href="" id="login-page">login</a></p>
+     </div>
+    <!-- dashborad -->
+        <div id="dashboard-section" class="container hidden">
+            <div class="header">
+                <h2 id="welcome-msg">Welcome</h2>
+                <button id="logout-btn">Logout</button>
+            </div>
+            <div id="task-list">
+            </div>
+        </div>
+</body>
+</html>
