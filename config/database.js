@@ -1,5 +1,5 @@
 const{ Sequelize }=require('sequelize');
-const path=reqiuire(path)
+const path=require('path')
 
 const sequelize=new Sequelize({
     dialect:'sqlite',
