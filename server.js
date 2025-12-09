@@ -7,6 +7,7 @@ app.use(express.json());
 
 const userRoutes=require('./routes/users');
 app.use('/user',userRoutes);
+app.use('/task',require('./routes/task'));
 
 
 sequelize.sync().
