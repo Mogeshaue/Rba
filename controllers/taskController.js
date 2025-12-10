@@ -14,4 +14,15 @@ function createTask(req,res){
     });
 }
 
-module.exports={createTask};
+async function getTasks(req,res){
+    const {userId,userRole}=req.user;
+    let tasks
+    if(userRole==='admin'){
+        tasks=await Task.findAll()
+    }elseif(userRole==='user'){
+        tasks=await Task.findAll({where:{userId:userId}})
+    }
+    res.status(200).json(tasks);
+}
+
+module.exports={createTask, getTasks};
