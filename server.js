@@ -13,7 +13,7 @@ app.use('/task',require('./routes/task'));
 sequelize.sync().
 then(()=>{
     app.listen (port,()=>{
-        console.log(`Server is running on http://localhost:${port}`);
+        console.log(`Okie http://localhost:${port}`);
     });
 }).catch((err)=>{
     console.error('DB CONNECTION ERROR :',err);
