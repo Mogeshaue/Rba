@@ -15,13 +15,20 @@ function createTask(req,res){
 }
 
 async function getTasks(req,res){
+    console.log("getTasks called");
     const {userId,userRole}=req.user;
+    console.log("UserID:", userId, "UserRole:", userRole);
     let tasks
+    // tasks=await Task.findAll()
     if(userRole==='admin'){
+        console.log("Admin access");
         tasks=await Task.findAll()
-    }elseif(userRole==='user'){
+    }else if(userRole==='user'){
+        console.log("User access");
         tasks=await Task.findAll({where:{userId:userId}})
+
     }
+    console.log("Tasks:", tasks);
     res.status(200).json(tasks);
 }
 
