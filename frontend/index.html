@@ -4,26 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>node</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <!-- login -->
-    <div id="login-container">
+    <div id="login-container" class="form-container">
         <h2>Login</h2>
         <form id="loginForm">
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" required>
-            
             <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-            
+            <input type="password" id="password" name="password" required>  
             <button type="submit">Login</button>
-
         </form>
         <p>Don't have an account? <a href="#" id="show-register">Register</a></p>
     </div>
     <!-- Register -->
-     <div id="register" >
+     <div id="register" class="form-container" >
         <h2>Register</h2>
         <form id="registerForm">
             <div id="registerElements">
@@ -45,8 +42,9 @@
     <!-- dashborad -->
         <div id="dashboard-section" class="container hidden">
             <div class="header">
-                <h2 id="welcome-msg">Welcome</h2>
+                <h2 id="welcome-msg">Welcome </h2>
                 <button id="logout-btn">Logout</button>
+                <h3>Your Tasks</h3><br>
             </div>
             <div id="task-list">
             </div>

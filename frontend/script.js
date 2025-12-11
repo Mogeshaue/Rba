@@ -8,11 +8,11 @@ const loginButton=document.getElementById('loginButton');
 const registerButton=document.getElementById('registerButton');
 const loginContainer=document.getElementById('login-container');
 const registerContainer=document.getElementById('register');
-const switchToRegister=document.getElementById('switchToRegister');
+const welcomeMsg=document.getElementById('welcome-msg');
 const dashboardSection=document.getElementById('dashboard-section');
 const showRegister=document.getElementById('show-register');
 const logoutBtn=document.getElementById('logout-btn');
-
+const taskList=document.getElementById('task-list');
 const user=localStorage.getItem('user');
 if(user){
     showForm('dashboard');
@@ -114,11 +114,13 @@ function getTasks(){
         const taskList=document.getElementById('task-list');
         taskList.innerHTML='';
         if(data && data.length > 0){
+            let tasksserialno=0
             data.forEach(task =>{
                 const taskItem=document.createElement('div');
                 taskItem.className='task-item';
-                taskItem.innerHTML=`<h3>${task.title}</h3><p>${task.description || ''}</p>`;
+                taskItem.innerHTML=`<h3>${tasksserialno + 1}. ${task.title}</h3><p>${task.description || ''}</p><br>`;
                 taskList.appendChild(taskItem);
+                tasksserialno++;
             });
         }else{
             taskList.innerHTML='<p>No tasks found. Create your first task!</p>';
@@ -131,3 +133,6 @@ function getTasks(){
 if(dashboardSection.style.display==='block'){
     getTasks();
 }
+
+welcomeMsg.textContent=`Welcome, ${JSON.parse(localStorage.getItem('user')).email.split('@')[0]}`;
+
