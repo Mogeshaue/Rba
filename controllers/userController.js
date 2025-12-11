@@ -4,27 +4,41 @@ const bcrypt=require('bcrypt');
 const jwt=require('jsonwebtoken');
 const {SECRET}=require('../middleware/auth');
 
-async function register(req,res){
-    const {username,email,password,role}=req.body;
-    hashPassword(password)
-    .then((hashedPassword)=>{
-        return User.create({
+async function  register(req,res){
+    try{
+        const {username,email,password,role}=req.body;
+        console.log("Registering user:", req.body);
+        
+        if(!username || !email || !password){
+            return res.status(400).json({error:'Username, email and password are required'});
+        }
+        
+        const hashedPassword=await hashPassword(password);
+        const newUser=await User.create({
             username,
             email,
             password:hashedPassword,
-            role
+            role:role || 'user'
         });
-    }).then((newUser)=>{
-        res.status(201).json({message:'User created',user:newUser});
-    }).catch((err)=>{
-        res.status(500).json({error:'Error creating user',details:err.message});
-    });
+        
+        res.status(201).json({success:true,message:'User created',user:{
+            id:newUser.id,
+            username:newUser.username,
+            email:newUser.email,
+            role:newUser.role
+        }});
+    }catch(err){
+        console.error('Registration error:',err);
+        res.status(500).json({success:false,error:'Error creating user',details:err.message});
+    }
 }
 
 
 async  function login(req,res){
+
     const {email,password}=req.body
     const user=await User.findOne({where:{email}});
+    console.log("Login attempt for email:", email);
     if(!user){
         return res.status(404).json({message:'Not found'})
     }
