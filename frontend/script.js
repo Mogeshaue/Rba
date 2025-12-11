@@ -13,8 +13,8 @@ const dashboardSection=document.getElementById('dashboard-section');
 const showRegister=document.getElementById('show-register');
 const logoutBtn=document.getElementById('logout-btn');
 const taskList=document.getElementById('task-list');
-const user=localStorage.getItem('user');
-if(user){
+const accessToken=localStorage.getItem('accessToken');
+if(accessToken){
     showForm('dashboard');
     getTasks();
 }else{
@@ -22,7 +22,7 @@ if(user){
 }
 
 logoutBtn.addEventListener('click', () => {
-    localStorage.removeItem('user');
+    localStorage.removeItem('accessToken');
     showForm('login');
 });
 
@@ -55,7 +55,7 @@ loginForm.addEventListener('submit', (e) =>{
         console.log("Login response data:", data);
         if(data.accessToken){
             console.log("Login successful, storing user data.");
-            localStorage.setItem('user',JSON.stringify(data));
+            localStorage.setItem('accessToken',JSON.stringify(data.accessToken));
             showForm('dashboard');
             getTasks();
         }else{
@@ -94,8 +94,8 @@ registerForm.addEventListener('submit', (e) =>{
 });
 
 function getTasks(){
-    const user=JSON.parse(localStorage.getItem('user'));
-    if(!user || !user.accessToken){
+    const accessToken=JSON.parse(localStorage.getItem('accessToken'));
+    if(!accessToken){
         console.error('No user token found');
         showForm('login');
         return;
@@ -105,7 +105,7 @@ function getTasks(){
             method:'GET',
             headers:{
                 'Content-Type':'application/json',
-                'Authorization':`Bearer ${user.accessToken}`
+                'Authorization':`Bearer ${accessToken}`
             }
         });
         console.log("Fetching tasks response:", res);
@@ -127,12 +127,10 @@ function getTasks(){
         }
         console.log("Tasks", data.tasks);
     }
-    console.log("Fetching tasks for user:", user);
     fetchTasks();
 }   
 if(dashboardSection.style.display==='block'){
     getTasks();
 }
 
-welcomeMsg.textContent=`Welcome, ${JSON.parse(localStorage.getItem('user')).email.split('@')[0]}`;
 
