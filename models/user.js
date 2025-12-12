@@ -1,6 +1,5 @@
 const {DataTypes, Model}=require('sequelize');
 const sequelize=require('../config/database');
-const bycrypt=require('bcrypt');
 
 
 const User=sequelize.define('User',{

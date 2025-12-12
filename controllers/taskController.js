@@ -21,7 +21,6 @@ async function getTasks(req,res){
     let tasks
     // tasks=await Task.findAll()
     if(userRole==='admin'){
-        console.log("Admin access");
         tasks=await Task.findAll()
     }else if(userRole==='user'){
         console.log("User access");

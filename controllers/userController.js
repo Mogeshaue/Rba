@@ -13,6 +13,20 @@ async function  register(req,res){
             return res.status(400).json({error:'Username, email and password are required'});
         }
         
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if(!emailRegex.test(email)){
+            return res.status(400).json({error:'Invalid email format'});
+        }
+        
+        if(password.length < 6){
+            return res.status(400).json({error:'Password must be at least 6 characters'});
+        }
+        
+        const existingUser = await User.findOne({where:{email}});
+        if(existingUser){
+            return res.status(409).json({error:'User with this email already exists'});
+        }
+        
         const hashedPassword=await hashPassword(password);
         const newUser=await User.create({
             username,
@@ -35,9 +49,15 @@ async function  register(req,res){
 
 
 async  function login(req,res){
-
-    const {email,password}=req.body
-    const user=await User.findOne({where:{email}});
+    try{
+        const {email,password}=req.body;
+        
+        // Validate input
+        if(!email || !password){
+            return res.status(400).json({message:'Email and password are required'});
+        }
+        
+        const user=await User.findOne({where:{email}});
     console.log("Login attempt for email:", email);
     if(!user){
         return res.status(404).json({message:'Not found'})
@@ -51,11 +71,15 @@ async  function login(req,res){
     })
     res.status(200).json({
         id:user.id,
-        name:user.name,
+        username:user.username,
         email:user.email,
         role:user.role,
         accessToken:jwtToken
-        })
+    });
+    }catch(err){
+        console.error('Login error:',err);
+        res.status(500).json({message:'Internal server error'});
+    }
 }
 
 

@@ -1,18 +1,11 @@
 
 const baseUrl="http://localhost:3000";
 
-
 const loginForm=document.getElementById('login-container');
 const registerForm=document.getElementById('register');
-const loginButton=document.getElementById('loginButton');
-const registerButton=document.getElementById('registerButton');
-const loginContainer=document.getElementById('login-container');
-const registerContainer=document.getElementById('register');
-const welcomeMsg=document.getElementById('welcome-msg');
 const dashboardSection=document.getElementById('dashboard-section');
 const showRegister=document.getElementById('show-register');
 const logoutBtn=document.getElementById('logout-btn');
-const taskList=document.getElementById('task-list');
 const accessToken=localStorage.getItem('accessToken');
 if(accessToken){
     showForm('dashboard');
@@ -41,9 +34,16 @@ function showForm(form){
 }
 
 loginForm.addEventListener('submit', (e) =>{
-    const email=document.getElementById('email').value;
+    e.preventDefault();
+    const email=document.getElementById('email').value.trim();
     const password=document.getElementById('password').value;
-    e.preventDefault()
+    
+    // Frontend validation
+    if(!email || !password){
+        alert('Email and password are required');
+        return;
+    }
+    
     console.log("Login attempt:", {email, password});
     async function loginUser(){
         const reg=await fetch(`${baseUrl}/user/login`,{
@@ -73,9 +73,27 @@ showRegister.addEventListener('click', (e) =>{
 
 registerForm.addEventListener('submit', (e) =>{
     e.preventDefault();
-    const username=document.getElementById('regName').value;
-    const email=document.getElementById('regEmail').value;
+    const username=document.getElementById('regName').value.trim();
+    const email=document.getElementById('regEmail').value.trim();
     const password=document.getElementById('regPassword').value;
+    
+    // Frontend validation
+    if(!username || !email || !password){
+        alert('All fields are required');
+        return;
+    }
+    
+    if(password.length < 6){
+        alert('Password must be at least 6 characters');
+        return;
+    }
+    
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if(!emailRegex.test(email)){
+        alert('Please enter a valid email address');
+        return;
+    }
+    
     async function registerUser(){
         const reg=await fetch(`${baseUrl}/user/register`,{
             method:'POST',
