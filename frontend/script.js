@@ -8,6 +8,11 @@ const showRegister=document.getElementById('show-register');
 const logoutBtn=document.getElementById('logout-btn');
 const accessToken=localStorage.getItem('accessToken');
 if(accessToken){
+    const user=JSON.parse(localStorage.getItem('user'));
+    if(user && user.username){
+        const welcomeMsg=document.getElementById('welcome-msg');
+        welcomeMsg.textContent=`Welcome ${user.username}!`;
+    }
     showForm('dashboard');
     getTasks();
 }else{
@@ -16,6 +21,7 @@ if(accessToken){
 
 logoutBtn.addEventListener('click', () => {
     localStorage.removeItem('accessToken');
+    localStorage.removeItem('user');
     showForm('login');
 });
 
@@ -38,7 +44,6 @@ loginForm.addEventListener('submit', (e) =>{
     const email=document.getElementById('email').value.trim();
     const password=document.getElementById('password').value;
     
-    // Frontend validation
     if(!email || !password){
         alert('Email and password are required');
         return;
@@ -55,7 +60,10 @@ loginForm.addEventListener('submit', (e) =>{
         console.log("Login response data:", data);
         if(data.accessToken){
             console.log("Login successful, storing user data.");
+            localStorage.setItem('user', JSON.stringify(data));
             localStorage.setItem('accessToken',JSON.stringify(data.accessToken));
+            const welcomeMsg=document.getElementById('welcome-msg');
+            welcomeMsg.textContent=`Welcome ${data.username}!`;
             showForm('dashboard');
             getTasks();
         }else{
@@ -77,7 +85,6 @@ registerForm.addEventListener('submit', (e) =>{
     const email=document.getElementById('regEmail').value.trim();
     const password=document.getElementById('regPassword').value;
     
-    // Frontend validation
     if(!username || !email || !password){
         alert('All fields are required');
         return;
