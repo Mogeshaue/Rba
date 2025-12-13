@@ -1,5 +1,5 @@
 
-const baseUrl="http://localhost:3000";
+const baseUrl="https://rba-production-fbc2.up.railway.app";
 
 const loginForm=document.getElementById('login-container');
 const registerForm=document.getElementById('register');
@@ -11,7 +11,7 @@ if(accessToken){
     const user=JSON.parse(localStorage.getItem('user'));
     if(user && user.username){
         const welcomeMsg=document.getElementById('welcome-msg');
-        welcomeMsg.textContent=`Welcome ${user.username}!`;
+        welcomeMsg.textContent=`Welcome ${user.username} (${user.role})`;
     }
     showForm('dashboard');
     getTasks();
@@ -63,7 +63,7 @@ loginForm.addEventListener('submit', (e) =>{
             localStorage.setItem('user', JSON.stringify(data));
             localStorage.setItem('accessToken',JSON.stringify(data.accessToken));
             const welcomeMsg=document.getElementById('welcome-msg');
-            welcomeMsg.textContent=`Welcome ${data.username}!`;
+            welcomeMsg.textContent=`Welcome ${data.username} (${data.role})`;
             showForm('dashboard');
             getTasks();
         }else{
@@ -135,7 +135,6 @@ function getTasks(){
         });
         console.log("Fetching tasks response:", res);
         const data=await res.json();
-        console.log("Tasks data:", data);
         const taskList=document.getElementById('task-list');
         taskList.innerHTML='';
         if(data && data.length > 0){
@@ -150,7 +149,6 @@ function getTasks(){
         }else{
             taskList.innerHTML='<p>No tasks found. Create your first task!</p>';
         }
-        console.log("Tasks", data.tasks);
     }
     fetchTasks();
 }   
