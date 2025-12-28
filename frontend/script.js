@@ -102,17 +102,26 @@ registerForm.addEventListener('submit', (e) =>{
     }
     
     async function registerUser(){
-        const reg=await fetch(`${baseUrl}/user/register`,{
-            method:'POST',
-            headers:{'Content-Type':'application/json'},
-            body:JSON.stringify({username,email,password})
-        });
-        const data=await reg.json();    
-        if(data.success){
-            alert('Registration successful! Please login.');
-            showForm('login');
-        }else{
-            alert(data.error || data.message || 'Registration failed');
+        try{
+            const reg=await fetch(`${baseUrl}/user/register`,{
+                method:'POST',
+                headers:{'Content-Type':'application/json'},
+                body:JSON.stringify({username,email,password})
+            });
+            const data=await reg.json();
+            console.log("Registration response:", data);
+            
+            if(data.success){
+                alert('Registration successful! Please login.');
+                showForm('login');
+            }else if(data.error){
+                alert(data.error);
+            }else{
+                alert('Registration failed');
+            }
+        }catch(error){
+            console.error('Registration error:', error);
+            alert('An error occurred during registration');
         }
     }
     registerUser();
