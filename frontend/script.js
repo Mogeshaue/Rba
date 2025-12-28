@@ -112,7 +112,7 @@ registerForm.addEventListener('submit', (e) =>{
             alert('Registration successful! Please login.');
             showForm('login');
         }else{
-            alert(data.message);
+            alert(data.error || data.message || 'Registration failed');
         }
     }
     registerUser();
